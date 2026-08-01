@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: sis-inscripcion-umss
+    env: python
+    buildCommand: ./build.sh
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sis-inscripcion-umss-db
+          property: connectionString
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://*.onrender.com"
+databases:
+  - name: sis-inscripcion-umss-db
+    plan: free
+    databaseName: sis_inscripcion_umss
+    user: sis_inscripcion_umss
