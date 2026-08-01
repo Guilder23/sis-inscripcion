@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/docentes.css' %}">
+<div class="page">
+    <h1>{% if docente %}Editar docente{% else %}Nuevo docente{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="nombre" value="{{ docente.nombre|default_if_none:'' }}" placeholder="Nombre" required>
+        <input type="text" name="apellido" value="{{ docente.apellido|default_if_none:'' }}" placeholder="Apellido" required>
+        <input type="text" name="ci" value="{{ docente.ci|default_if_none:'' }}" placeholder="CI" required>
+        <input type="text" name="especialidad" value="{{ docente.especialidad|default_if_none:'' }}" placeholder="Especialidad" required>
+        <label><input type="checkbox" name="activo" {% if docente and docente.activo %}checked{% endif %}> Activo</label>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/estudiantes.css' %}">
+<div class="page">
+    <h1>{% if estudiante %}Editar estudiante{% else %}Nuevo estudiante{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="codigo" value="{{ estudiante.codigo|default_if_none:'' }}" placeholder="Código SIS" required>
+        <input type="text" name="nombre" value="{{ estudiante.nombre|default_if_none:'' }}" placeholder="Nombre" required>
+        <input type="text" name="apellido" value="{{ estudiante.apellido|default_if_none:'' }}" placeholder="Apellido" required>
+        <input type="email" name="email" value="{{ estudiante.email|default_if_none:'' }}" placeholder="Correo" required>
+        <input type="text" name="carrera" value="{{ estudiante.carrera|default_if_none:'' }}" placeholder="Carrera" required>
+        <label><input type="checkbox" name="activo" {% if estudiante and estudiante.activo %}checked{% endif %}> Activo</label>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endblock %}

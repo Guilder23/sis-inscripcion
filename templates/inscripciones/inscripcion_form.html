@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/inscripciones.css' %}">
+<div class="page">
+    <h1>Nueva inscripción</h1>
+    <form method="post">
+        {% csrf_token %}
+        <select name="estudiante" required>
+            <option value="">Seleccione estudiante</option>
+            {% for estudiante in estudiantes %}
+            <option value="{{ estudiante.pk }}">{{ estudiante.codigo }} - {{ estudiante.nombre }} {{ estudiante.apellido }}</option>
+            {% endfor %}
+        </select>
+        <select name="grupo" required>
+            <option value="">Seleccione grupo</option>
+            {% for grupo in grupos %}
+            <option value="{{ grupo.pk }}">{{ grupo.materia.codigo }} - Grupo {{ grupo.numero }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Inscribir</button>
+    </form>
+</div>
+{% endblock %}

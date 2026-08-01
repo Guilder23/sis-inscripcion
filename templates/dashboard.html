@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<div class="dashboard">
+    <h1>Panel de control</h1>
+    <p>Sistema de inscripción estudiantil</p>
+    <div class="cards">
+        <a class="card" href="{% url 'estudiantes' %}">Gestionar estudiantes</a>
+        <a class="card" href="{% url 'docentes' %}">Gestionar docentes</a>
+        <a class="card" href="{% url 'materias' %}">Gestionar materias</a>
+        <a class="card" href="{% url 'inscripciones' %}">Inscribir materias</a>
+    </div>
+</div>
+{% endblock %}
