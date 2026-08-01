@@ -52,10 +52,8 @@
                     <span class="badge">Semestre {{ materia.semestre }}</span>
                 </div>
                 <div class="materia-meta">
-                    {% if user.is_staff %}
-                    <span><i class="fa-solid fa-building-columns"></i> {{ materia.facultad.nombre }}</span>
-                    {% endif %}
                     <span><i class="fa-solid fa-book-open"></i> {{ materia.creditos }} cr.</span>
+                    <span><i class="fa-solid fa-graduation-cap"></i> {{ materia.carrera.nombre }}</span>
                 </div>
                 <div class="grupos-list">
                     {% for grupo in materia.grupos.all %}

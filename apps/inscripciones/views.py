@@ -13,9 +13,10 @@ def inscripciones(request):
 
     estudiante = request.user.estudiante
     inscripciones = Inscripcion.objects.filter(estudiante=estudiante).select_related('grupo__materia', 'grupo__docente')
+    inscritas_materias = inscripciones.values_list('grupo__materia', flat=True)
     materias = Materia.objects.select_related('carrera__facultad').prefetch_related('grupos__docente').all()
     if estudiante and estudiante.carrera:
-        materias = materias.filter(carrera=estudiante.carrera)
+        materias = materias.filter(carrera=estudiante.carrera).exclude(id__in=inscritas_materias)
     else:
         materias = Materia.objects.none()
     return render(request, 'inscripciones/inscripciones.html', {
@@ -39,9 +40,10 @@ def nueva_inscripcion(request):
             return render(request, 'inscripciones/inscripcion_form.html', {'error': 'El grupo ya alcanzó su cupo.', 'grupos': grupos_disponibles})
         Inscripcion.objects.create(estudiante=estudiante, grupo=grupo)
         return redirect('student_dashboard')
+    inscripcion_materias = Inscripcion.objects.filter(estudiante=estudiante).values_list('grupo__materia', flat=True) if estudiante else []
     grupos = Grupo.objects.filter(activo=True).select_related('materia__carrera__facultad', 'docente').all()
     if estudiante and estudiante.carrera:
-        grupos = grupos.filter(materia__carrera=estudiante.carrera)
+        grupos = grupos.filter(materia__carrera=estudiante.carrera).exclude(materia__in=inscripcion_materias)
     else:
         grupos = Grupo.objects.none()
     return render(request, 'inscripciones/inscripcion_form.html', {'grupos': grupos, 'estudiante': estudiante})
