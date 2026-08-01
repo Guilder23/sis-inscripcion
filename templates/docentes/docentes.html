@@ -4,11 +4,13 @@
 <link rel="stylesheet" href="{% static 'css/docentes.css' %}">
 <div class="page">
     <h1>Gestión de docentes</h1>
-    <a class="btn" href="{% url 'docente_nuevo' %}">Nuevo docente</a>
-    <a class="btn secondary" href="{% url 'dashboard' %}">Volver</a>
+    <div class="actions-row">
+        <a class="btn" href="{% url 'docente_nuevo' %}">Nuevo docente</a>
+        <a class="btn secondary" href="{% url 'dashboard' %}">Volver</a>
+    </div>
     <table>
         <thead>
-            <tr><th>Nombre</th><th>Apellido</th><th>CI</th><th>Especialidad</th><th>Estado</th><th>Acciones</th></tr>
+            <tr><th>Nombre</th><th>Apellido</th><th>CI</th><th>Especialidad</th><th>Facultad</th><th>Carrera</th><th>Estado</th><th>Acciones</th></tr>
         </thead>
         <tbody>
             {% for docente in docentes %}
@@ -17,6 +19,8 @@
                 <td>{{ docente.apellido }}</td>
                 <td>{{ docente.ci }}</td>
                 <td>{{ docente.especialidad }}</td>
+                <td>{{ docente.facultad.nombre|default:'-' }}</td>
+                <td>{{ docente.carrera.nombre|default:'-' }}</td>
                 <td>{{ docente.activo|yesno:'Activo,Inactivo' }}</td>
                 <td>
                     <a href="{% url 'docente_editar' docente.pk %}">Editar</a>
@@ -24,7 +28,7 @@
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="6">No hay docentes registrados.</td></tr>
+            <tr><td colspan="8">No hay docentes registrados.</td></tr>
             {% endfor %}
         </tbody>
     </table>

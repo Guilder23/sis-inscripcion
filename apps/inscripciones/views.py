@@ -13,9 +13,9 @@ def inscripciones(request):
 
     estudiante = request.user.estudiante
     inscripciones = Inscripcion.objects.filter(estudiante=estudiante).select_related('grupo__materia', 'grupo__docente')
-    materias = Materia.objects.select_related('facultad').prefetch_related('grupos__docente').all()
+    materias = Materia.objects.select_related('carrera__facultad').prefetch_related('grupos__docente').all()
     if estudiante and estudiante.carrera:
-        materias = materias.filter(facultad__nombre=estudiante.carrera)
+        materias = materias.filter(carrera=estudiante.carrera)
     else:
         materias = Materia.objects.none()
     return render(request, 'inscripciones/inscripciones.html', {
@@ -32,16 +32,16 @@ def nueva_inscripcion(request):
         if estudiante is None:
             return redirect('student_dashboard')
         grupo = Grupo.objects.get(pk=request.POST.get('grupo'))
-        grupos_disponibles = Grupo.objects.filter(activo=True, materia__facultad__nombre=estudiante.carrera).select_related('materia', 'docente').all() if estudiante.carrera else Grupo.objects.none()
+        grupos_disponibles = Grupo.objects.filter(activo=True, materia__carrera=estudiante.carrera).select_related('materia', 'docente').all() if estudiante.carrera else Grupo.objects.none()
         if Inscripcion.objects.filter(estudiante=estudiante, grupo=grupo).exists():
             return render(request, 'inscripciones/inscripcion_form.html', {'error': 'Ya estás inscrito en este grupo.', 'grupos': grupos_disponibles})
         if Inscripcion.objects.filter(grupo=grupo).count() >= grupo.cupo:
             return render(request, 'inscripciones/inscripcion_form.html', {'error': 'El grupo ya alcanzó su cupo.', 'grupos': grupos_disponibles})
         Inscripcion.objects.create(estudiante=estudiante, grupo=grupo)
         return redirect('student_dashboard')
-    grupos = Grupo.objects.filter(activo=True).select_related('materia', 'docente').all()
+    grupos = Grupo.objects.filter(activo=True).select_related('materia__carrera__facultad', 'docente').all()
     if estudiante and estudiante.carrera:
-        grupos = grupos.filter(materia__facultad__nombre=estudiante.carrera)
+        grupos = grupos.filter(materia__carrera=estudiante.carrera)
     else:
         grupos = Grupo.objects.none()
     return render(request, 'inscripciones/inscripcion_form.html', {'grupos': grupos, 'estudiante': estudiante})

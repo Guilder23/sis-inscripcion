@@ -6,7 +6,7 @@
     <div class="page-header">
         <div>
             <h1>{% if estudiante %}Editar estudiante{% else %}Nuevo estudiante{% endif %}</h1>
-            <p>Complete los datos del estudiante y seleccione su carrera para habilitar las materias disponibles.</p>
+            <p>Complete los datos del estudiante y seleccione su facultad y carrera.</p>
         </div>
     </div>
 
@@ -40,17 +40,26 @@
                 </label>
             </div>
 
-            <label class="field">
-                <span>Carrera</span>
-                <select name="carrera" required>
-                    <option value="">Seleccione una carrera</option>
-                    {% for facultad in facultades %}
-                    <option value="{{ facultad.nombre }}" {% if estudiante and estudiante.carrera == facultad.nombre %}selected{% endif %}>{{ facultad.nombre }}</option>
-                    {% empty %}
-                    <option value="" disabled>No hay carreras registradas</option>
-                    {% endfor %}
-                </select>
-            </label>
+            <div class="form-grid">
+                <label class="field">
+                    <span>Facultad</span>
+                    <select name="facultad" id="facultadSelect" required>
+                        <option value="">Seleccione una facultad</option>
+                        {% for facultad in facultades %}
+                        <option value="{{ facultad.pk }}" {% if estudiante and estudiante.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Carrera</span>
+                    <select name="carrera" id="carreraSelect" required>
+                        <option value="">Seleccione una carrera</option>
+                        {% for carrera in carreras %}
+                        <option value="{{ carrera.pk }}" data-facultad="{{ carrera.facultad_id }}" {% if estudiante and estudiante.carrera_id == carrera.pk %}selected{% endif %}>{{ carrera.facultad.nombre }} - {{ carrera.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
 
             <label class="checkbox-field">
                 <input type="checkbox" name="activo" {% if estudiante and estudiante.activo %}checked{% endif %}>
@@ -61,4 +70,28 @@
         </form>
     </div>
 </div>
+<script>
+const facultadSelect = document.getElementById('facultadSelect');
+const carreraSelect = document.getElementById('carreraSelect');
+const carreraOptions = Array.from(carreraSelect.options).slice(1);
+
+function filtrarCarreras() {
+    const facultadId = facultadSelect.value;
+    let hasVisible = false;
+    carreraOptions.forEach((option) => {
+        const matches = !facultadId || option.dataset.facultad === facultadId;
+        option.hidden = !matches;
+        option.disabled = !matches;
+        if (matches) {
+            hasVisible = true;
+        }
+    });
+    if (!hasVisible) {
+        carreraSelect.value = '';
+    }
+}
+
+facultadSelect.addEventListener('change', filtrarCarreras);
+filtrarCarreras();
+</script>
 {% endblock %}

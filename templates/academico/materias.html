@@ -9,17 +9,18 @@
         <input type="text" name="codigo" placeholder="Código" required>
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="number" name="creditos" value="4" min="1" required>
-        <select name="facultad" required>
-            <option value="">Seleccione facultad</option>
-            {% for facultad in facultades %}
-            <option value="{{ facultad.pk }}">{{ facultad.nombre }}</option>
+        <input type="number" name="semestre" value="1" min="1" required>
+        <select name="carrera" required>
+            <option value="">Seleccione carrera</option>
+            {% for carrera in carreras %}
+            <option value="{{ carrera.pk }}">{{ carrera.facultad.nombre }} - {{ carrera.nombre }}</option>
             {% endfor %}
         </select>
         <button type="submit">Agregar</button>
     </form>
     <table>
         <thead>
-            <tr><th>Código</th><th>Materia</th><th>Créditos</th><th>Facultad</th><th>Acciones</th></tr>
+            <tr><th>Código</th><th>Materia</th><th>Créditos</th><th>Semestre</th><th>Carrera</th><th>Acciones</th></tr>
         </thead>
         <tbody>
             {% for materia in materias %}
@@ -27,14 +28,15 @@
                 <td>{{ materia.codigo }}</td>
                 <td>{{ materia.nombre }}</td>
                 <td>{{ materia.creditos }}</td>
-                <td>{{ materia.facultad.nombre }}</td>
+                <td>{{ materia.semestre }}</td>
+                <td>{{ materia.carrera.facultad.nombre }} - {{ materia.carrera.nombre }}</td>
                 <td>
                     <a href="{% url 'materia_editar' materia.pk %}">Editar</a>
                     <a href="{% url 'materia_eliminar' materia.pk %}" onclick="return confirm('¿Eliminar materia?')">Eliminar</a>
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="5">No hay materias registradas.</td></tr>
+            <tr><td colspan="6">No hay materias registradas.</td></tr>
             {% endfor %}
         </tbody>
     </table>

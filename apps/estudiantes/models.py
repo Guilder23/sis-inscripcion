@@ -8,7 +8,8 @@ class Estudiante(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
-    carrera = models.CharField(max_length=100)
+    facultad = models.ForeignKey('academico.Facultad', on_delete=models.SET_NULL, null=True, blank=True, related_name='estudiantes')
+    carrera = models.ForeignKey('academico.Carrera', on_delete=models.SET_NULL, null=True, blank=True, related_name='estudiantes')
     activo = models.BooleanField(default=True)
 
     def __str__(self):

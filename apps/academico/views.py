@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from docentes.models import Docente
-from .models import Facultad, Materia, Grupo
+from .models import Facultad, Carrera, Materia, Grupo
 
 
 def facultades(request):
@@ -9,6 +9,35 @@ def facultades(request):
         Facultad.objects.create(nombre=request.POST.get('nombre'))
         return redirect('facultades')
     return render(request, 'academico/facultades.html', {'facultades': facultades})
+
+
+def carreras(request):
+    carreras = Carrera.objects.select_related('facultad').all()
+    facultades = Facultad.objects.all()
+    if request.method == 'POST':
+        Carrera.objects.create(
+            nombre=request.POST.get('nombre'),
+            facultad=Facultad.objects.get(pk=request.POST.get('facultad')),
+        )
+        return redirect('carreras')
+    return render(request, 'academico/carreras.html', {'carreras': carreras, 'facultades': facultades})
+
+
+def carrera_editar(request, pk):
+    carrera = get_object_or_404(Carrera, pk=pk)
+    facultades = Facultad.objects.all()
+    if request.method == 'POST':
+        carrera.nombre = request.POST.get('nombre')
+        carrera.facultad = Facultad.objects.get(pk=request.POST.get('facultad'))
+        carrera.save()
+        return redirect('carreras')
+    return render(request, 'academico/carrera_form.html', {'carrera': carrera, 'facultades': facultades})
+
+
+def carrera_eliminar(request, pk):
+    carrera = get_object_or_404(Carrera, pk=pk)
+    carrera.delete()
+    return redirect('carreras')
 
 
 def facultad_editar(request, pk):
@@ -27,30 +56,32 @@ def facultad_eliminar(request, pk):
 
 
 def materias(request):
-    materias = Materia.objects.select_related('facultad').all()
-    facultades = Facultad.objects.all()
+    materias = Materia.objects.select_related('carrera').all()
+    carreras = Carrera.objects.select_related('facultad').all()
     if request.method == 'POST':
         Materia.objects.create(
             nombre=request.POST.get('nombre'),
             codigo=request.POST.get('codigo'),
             creditos=request.POST.get('creditos', 4),
-            facultad=Facultad.objects.get(pk=request.POST.get('facultad')),
+            semestre=request.POST.get('semestre', 1),
+            carrera=Carrera.objects.get(pk=request.POST.get('carrera')),
         )
         return redirect('materias')
-    return render(request, 'academico/materias.html', {'materias': materias, 'facultades': facultades})
+    return render(request, 'academico/materias.html', {'materias': materias, 'carreras': carreras})
 
 
 def materia_editar(request, pk):
     materia = get_object_or_404(Materia, pk=pk)
-    facultades = Facultad.objects.all()
+    carreras = Carrera.objects.select_related('facultad').all()
     if request.method == 'POST':
         materia.nombre = request.POST.get('nombre')
         materia.codigo = request.POST.get('codigo')
         materia.creditos = request.POST.get('creditos', 4)
-        materia.facultad = Facultad.objects.get(pk=request.POST.get('facultad'))
+        materia.semestre = request.POST.get('semestre', 1)
+        materia.carrera = Carrera.objects.get(pk=request.POST.get('carrera'))
         materia.save()
         return redirect('materias')
-    return render(request, 'academico/materia_form.html', {'materia': materia, 'facultades': facultades})
+    return render(request, 'academico/materia_form.html', {'materia': materia, 'carreras': carreras})
 
 
 def materia_eliminar(request, pk):
@@ -61,8 +92,8 @@ def materia_eliminar(request, pk):
 
 def grupos(request):
     grupos = Grupo.objects.select_related('materia', 'docente').all()
-    materias = Materia.objects.all()
-    docentes = Docente.objects.all()
+    materias = Materia.objects.select_related('carrera').all()
+    docentes = Docente.objects.select_related('facultad', 'carrera').all()
     if request.method == 'POST':
         Grupo.objects.create(
             materia=Materia.objects.get(pk=request.POST.get('materia')),
@@ -77,8 +108,8 @@ def grupos(request):
 
 def grupo_editar(request, pk):
     grupo = get_object_or_404(Grupo, pk=pk)
-    materias = Materia.objects.all()
-    docentes = Docente.objects.all()
+    materias = Materia.objects.select_related('carrera').all()
+    docentes = Docente.objects.select_related('facultad', 'carrera').all()
     if request.method == 'POST':
         grupo.materia = Materia.objects.get(pk=request.POST.get('materia'))
         grupo.docente = Docente.objects.get(pk=request.POST.get('docente')) if request.POST.get('docente') else None

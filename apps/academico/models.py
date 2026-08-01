@@ -9,12 +9,20 @@ class Facultad(models.Model):
         return self.nombre
 
 
+class Carrera(models.Model):
+    facultad = models.ForeignKey(Facultad, on_delete=models.CASCADE, related_name='carreras')
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+
 class Materia(models.Model):
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=20, unique=True)
     creditos = models.PositiveIntegerField(default=4)
     semestre = models.PositiveIntegerField(default=1)
-    facultad = models.ForeignKey(Facultad, on_delete=models.CASCADE, related_name='materias')
+    carrera = models.ForeignKey(Carrera, on_delete=models.CASCADE, related_name='materias')
 
     def __str__(self):
         return f'{self.codigo} - {self.nombre}'

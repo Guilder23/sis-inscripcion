@@ -10,8 +10,38 @@
         <input type="text" name="apellido" value="{{ docente.apellido|default_if_none:'' }}" placeholder="Apellido" required>
         <input type="text" name="ci" value="{{ docente.ci|default_if_none:'' }}" placeholder="CI" required>
         <input type="text" name="especialidad" value="{{ docente.especialidad|default_if_none:'' }}" placeholder="Especialidad" required>
+        <select name="facultad" id="facultadSelect" required>
+            <option value="">Seleccione facultad</option>
+            {% for facultad in facultades %}
+            <option value="{{ facultad.pk }}" {% if docente and docente.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
+            {% endfor %}
+        </select>
+        <select name="carrera" id="carreraSelect" required>
+            <option value="">Seleccione carrera</option>
+            {% for carrera in carreras %}
+            <option value="{{ carrera.pk }}" data-facultad="{{ carrera.facultad_id }}" {% if docente and docente.carrera_id == carrera.pk %}selected{% endif %}>{{ carrera.facultad.nombre }} - {{ carrera.nombre }}</option>
+            {% endfor %}
+        </select>
         <label><input type="checkbox" name="activo" {% if docente and docente.activo %}checked{% endif %}> Activo</label>
         <button type="submit">Guardar</button>
     </form>
 </div>
+<script>
+const facultadSelect = document.getElementById('facultadSelect');
+const carreraSelect = document.getElementById('carreraSelect');
+const carreraOptions = Array.from(carreraSelect.options).slice(1);
+function filtrarCarreras() {
+    const facultadId = facultadSelect.value;
+    carreraOptions.forEach((option) => {
+        const matches = !facultadId || option.dataset.facultad === facultadId;
+        option.hidden = !matches;
+        option.disabled = !matches;
+    });
+    if (!carreraOptions.some((option) => !option.hidden)) {
+        carreraSelect.value = '';
+    }
+}
+facultadSelect.addEventListener('change', filtrarCarreras);
+filtrarCarreras();
+</script>
 {% endblock %}

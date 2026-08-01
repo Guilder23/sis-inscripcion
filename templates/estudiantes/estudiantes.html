@@ -4,11 +4,13 @@
 <link rel="stylesheet" href="{% static 'css/estudiantes.css' %}">
 <div class="page">
     <h1>Gestión de estudiantes</h1>
-    <a class="btn" href="{% url 'estudiante_nuevo' %}">Nuevo estudiante</a>
-    <a class="btn secondary" href="{% url 'dashboard' %}">Volver</a>
+    <div class="actions-row">
+        <a class="btn" href="{% url 'estudiante_nuevo' %}">Nuevo estudiante</a>
+        <a class="btn secondary" href="{% url 'dashboard' %}">Volver</a>
+    </div>
     <table>
         <thead>
-            <tr><th>Código</th><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Carrera</th><th>Estado</th><th>Acciones</th></tr>
+            <tr><th>Código</th><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Facultad</th><th>Carrera</th><th>Estado</th><th>Acciones</th></tr>
         </thead>
         <tbody>
             {% for estudiante in estudiantes %}
@@ -17,7 +19,8 @@
                 <td>{{ estudiante.user.username }}</td>
                 <td>{{ estudiante.nombre }}</td>
                 <td>{{ estudiante.apellido }}</td>
-                <td>{{ estudiante.carrera }}</td>
+                <td>{{ estudiante.facultad.nombre|default:'-' }}</td>
+                <td>{{ estudiante.carrera.nombre|default:'-' }}</td>
                 <td>{{ estudiante.activo|yesno:'Activo,Inactivo' }}</td>
                 <td>
                     <a href="{% url 'estudiante_editar' estudiante.pk %}">Editar</a>
@@ -25,7 +28,7 @@
                 </td>
             </tr>
             {% empty %}
-            <tr><td colspan="7">No hay estudiantes registrados.</td></tr>
+            <tr><td colspan="8">No hay estudiantes registrados.</td></tr>
             {% endfor %}
         </tbody>
     </table>
