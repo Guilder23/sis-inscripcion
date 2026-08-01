@@ -3,23 +3,7 @@ from django.db import migrations
 
 def rebuild_materia(apps, schema_editor):
     if schema_editor.connection.vendor == 'postgresql':
-        schema_editor.execute('ALTER TABLE academico_materia RENAME TO academico_materia_old;')
-        schema_editor.execute(
-            'CREATE TABLE academico_materia_new ('
-            'id bigserial PRIMARY KEY, '
-            'nombre varchar(100) NOT NULL, '
-            'codigo varchar(20) NOT NULL UNIQUE, '
-            'creditos integer NOT NULL, '
-            'semestre integer NOT NULL, '
-            'carrera_id bigint REFERENCES academico_carrera(id)'
-            ');'
-        )
-        schema_editor.execute(
-            'INSERT INTO academico_materia_new (id, nombre, codigo, creditos, semestre, carrera_id) '
-            'SELECT id, nombre, codigo, creditos, semestre, carrera_id FROM academico_materia_old;'
-        )
-        schema_editor.execute('DROP TABLE academico_materia_old;')
-        schema_editor.execute('ALTER TABLE academico_materia_new RENAME TO academico_materia;')
+        return
     else:
         schema_editor.execute('PRAGMA foreign_keys=off;')
         schema_editor.execute(
