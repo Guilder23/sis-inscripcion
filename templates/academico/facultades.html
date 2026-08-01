@@ -3,12 +3,10 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/academico.css' %}">
 <div class="page">
-    <h1>Gestión de facultades</h1>
-    <form method="post" class="inline-form">
-        {% csrf_token %}
-        <input type="text" name="nombre" placeholder="Nombre de la facultad" required>
-        <button type="submit">Agregar</button>
-    </form>
+    <div class="page-header">
+        <h1>Gestión de facultades</h1>
+        <a href="{% url 'facultad_nuevo' %}" class="btn">Nueva facultad</a>
+    </div>
     <table>
         <thead>
             <tr><th>Nombre</th><th>Acciones</th></tr>
@@ -18,8 +16,8 @@
             <tr>
                 <td>{{ facultad.nombre }}</td>
                 <td>
-                    <a href="{% url 'facultad_editar' facultad.pk %}">Editar</a>
-                    <a href="{% url 'facultad_eliminar' facultad.pk %}" onclick="return confirm('¿Eliminar facultad?')">Eliminar</a>
+                    <a href="{% url 'facultad_editar' facultad.pk %}" class="btn small secondary">Editar</a>
+                    <a href="{% url 'facultad_eliminar' facultad.pk %}" class="btn small danger" onclick="return confirm('¿Eliminar facultad?')">Eliminar</a>
                 </td>
             </tr>
             {% empty %}

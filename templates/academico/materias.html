@@ -3,21 +3,12 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/academico.css' %}">
 <div class="page">
-    <h1>Gestión de materias</h1>
-    <form method="post" class="inline-form">
-        {% csrf_token %}
-        <input type="text" name="codigo" placeholder="Código" required>
-        <input type="text" name="nombre" placeholder="Nombre" required>
-        <input type="number" name="creditos" value="4" min="1" required>
-        <input type="number" name="semestre" value="1" min="1" required>
-        <select name="carrera" required>
-            <option value="">Seleccione carrera</option>
-            {% for carrera in carreras %}
-            <option value="{{ carrera.pk }}">{{ carrera.facultad.nombre }} - {{ carrera.nombre }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Agregar</button>
-    </form>
+    <div class="page-header">
+        <h1>Gestión de materias</h1>
+        <div>
+            <a href="{% url 'materia_nueva' %}" class="btn">Nueva materia</a>
+        </div>
+    </div>
     <table>
         <thead>
             <tr><th>Código</th><th>Materia</th><th>Créditos</th><th>Semestre</th><th>Carrera</th><th>Acciones</th></tr>
@@ -31,8 +22,8 @@
                 <td>{{ materia.semestre }}</td>
                 <td>{{ materia.carrera.facultad.nombre }} - {{ materia.carrera.nombre }}</td>
                 <td>
-                    <a href="{% url 'materia_editar' materia.pk %}">Editar</a>
-                    <a href="{% url 'materia_eliminar' materia.pk %}" onclick="return confirm('¿Eliminar materia?')">Eliminar</a>
+                    <a href="{% url 'materia_editar' materia.pk %}" class="btn small secondary">Editar</a>
+                    <a href="{% url 'materia_eliminar' materia.pk %}" class="btn small danger" onclick="return confirm('¿Eliminar materia?')">Eliminar</a>
                 </td>
             </tr>
             {% empty %}

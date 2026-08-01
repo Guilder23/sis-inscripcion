@@ -3,28 +3,63 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/docentes.css' %}">
 <div class="page">
-    <h1>{% if docente %}Editar docente{% else %}Nuevo docente{% endif %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="nombre" value="{{ docente.nombre|default_if_none:'' }}" placeholder="Nombre" required>
-        <input type="text" name="apellido" value="{{ docente.apellido|default_if_none:'' }}" placeholder="Apellido" required>
-        <input type="text" name="ci" value="{{ docente.ci|default_if_none:'' }}" placeholder="CI" required>
-        <input type="text" name="especialidad" value="{{ docente.especialidad|default_if_none:'' }}" placeholder="Especialidad" required>
-        <select name="facultad" id="facultadSelect" required>
-            <option value="">Seleccione facultad</option>
-            {% for facultad in facultades %}
-            <option value="{{ facultad.pk }}" {% if docente and docente.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
-            {% endfor %}
-        </select>
-        <select name="carrera" id="carreraSelect" required>
-            <option value="">Seleccione carrera</option>
-            {% for carrera in carreras %}
-            <option value="{{ carrera.pk }}" data-facultad="{{ carrera.facultad_id }}" {% if docente and docente.carrera_id == carrera.pk %}selected{% endif %}>{{ carrera.facultad.nombre }} - {{ carrera.nombre }}</option>
-            {% endfor %}
-        </select>
-        <label><input type="checkbox" name="activo" {% if docente and docente.activo %}checked{% endif %}> Activo</label>
-        <button type="submit">Guardar</button>
-    </form>
+    <div class="page-header">
+        <div>
+            <h1>{% if docente %}Editar docente{% else %}Nuevo docente{% endif %}</h1>
+            <p>Complete los datos del docente y seleccione su facultad y carrera.</p>
+        </div>
+    </div>
+    <div class="section-card">
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            <div class="form-grid">
+                <label class="field">
+                    <span>Nombre</span>
+                    <input type="text" name="nombre" value="{{ docente.nombre|default_if_none:'' }}" placeholder="Nombre" required>
+                </label>
+                <label class="field">
+                    <span>Apellido</span>
+                    <input type="text" name="apellido" value="{{ docente.apellido|default_if_none:'' }}" placeholder="Apellido" required>
+                </label>
+                <label class="field">
+                    <span>CI</span>
+                    <input type="text" name="ci" value="{{ docente.ci|default_if_none:'' }}" placeholder="CI" required>
+                </label>
+                <label class="field">
+                    <span>Especialidad</span>
+                    <input type="text" name="especialidad" value="{{ docente.especialidad|default_if_none:'' }}" placeholder="Especialidad" required>
+                </label>
+            </div>
+            <div class="form-grid">
+                <label class="field">
+                    <span>Facultad</span>
+                    <select name="facultad" id="facultadSelect" required>
+                        <option value="">Seleccione facultad</option>
+                        {% for facultad in facultades %}
+                        <option value="{{ facultad.pk }}" {% if docente and docente.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Carrera</span>
+                    <select name="carrera" id="carreraSelect" required>
+                        <option value="">Seleccione carrera</option>
+                        {% for carrera in carreras %}
+                        <option value="{{ carrera.pk }}" data-facultad="{{ carrera.facultad_id }}" {% if docente and docente.carrera_id == carrera.pk %}selected{% endif %}>{{ carrera.facultad.nombre }} - {{ carrera.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+            <label class="checkbox-field">
+                <input type="checkbox" name="activo" {% if docente and docente.activo %}checked{% endif %}>
+                <span>Docente activo</span>
+            </label>
+            <div class="actions-row">
+                <button type="submit" class="btn">Guardar</button>
+                <a class="btn secondary" href="{% url 'docentes' %}">Cancelar</a>
+            </div>
+        </form>
+    </div>
 </div>
 <script>
 const facultadSelect = document.getElementById('facultadSelect');

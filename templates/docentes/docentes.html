@@ -22,9 +22,9 @@
                 <td>{{ docente.facultad.nombre|default:'-' }}</td>
                 <td>{{ docente.carrera.nombre|default:'-' }}</td>
                 <td>{{ docente.activo|yesno:'Activo,Inactivo' }}</td>
-                <td>
-                    <a href="{% url 'docente_editar' docente.pk %}">Editar</a>
-                    <a href="{% url 'docente_eliminar' docente.pk %}" onclick="return confirm('¿Eliminar docente?')">Eliminar</a>
+                <td class="table-actions">
+                    <a href="{% url 'docente_editar' docente.pk %}" class="btn small secondary">Editar</a>
+                    <a href="{% url 'docente_eliminar' docente.pk %}" class="btn small danger" onclick="return confirm('¿Eliminar docente?')">Eliminar</a>
                 </td>
             </tr>
             {% empty %}

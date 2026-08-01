@@ -3,17 +3,32 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/academico.css' %}">
 <div class="page">
-    <h1>{% if carrera %}Editar carrera{% else %}Nueva carrera{% endif %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="nombre" value="{{ carrera.nombre|default_if_none:'' }}" placeholder="Nombre de la carrera" required>
-        <select name="facultad" required>
-            <option value="">Seleccione facultad</option>
-            {% for facultad in facultades %}
-            <option value="{{ facultad.pk }}" {% if carrera and carrera.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Guardar</button>
-    </form>
+    <div class="page-header">
+        <div>
+            <h1>{% if carrera %}Editar carrera{% else %}Nueva carrera{% endif %}</h1>
+        </div>
+    </div>
+    <div class="section-card">
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            <label class="field">
+                <span>Nombre de la carrera</span>
+                <input type="text" name="nombre" value="{{ carrera.nombre|default_if_none:'' }}" placeholder="Nombre de la carrera" required>
+            </label>
+            <label class="field">
+                <span>Facultad</span>
+                <select name="facultad" required>
+                    <option value="">Seleccione facultad</option>
+                    {% for facultad in facultades %}
+                    <option value="{{ facultad.pk }}" {% if carrera and carrera.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div class="actions-row">
+                <button type="submit" class="btn">Guardar</button>
+                <a class="btn secondary" href="{% url 'carreras' %}">Cancelar</a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -3,18 +3,10 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/academico.css' %}">
 <div class="page">
-    <h1>Gestión de carreras</h1>
-    <form method="post" class="inline-form">
-        {% csrf_token %}
-        <input type="text" name="nombre" placeholder="Nombre de la carrera" required>
-        <select name="facultad" required>
-            <option value="">Seleccione facultad</option>
-            {% for facultad in facultades %}
-            <option value="{{ facultad.pk }}">{{ facultad.nombre }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Agregar</button>
-    </form>
+    <div class="page-header">
+        <h1>Gestión de carreras</h1>
+        <a href="{% url 'carrera_nueva' %}" class="btn">Nueva carrera</a>
+    </div>
     <table>
         <thead>
             <tr><th>Carrera</th><th>Facultad</th><th>Acciones</th></tr>
@@ -25,8 +17,8 @@
                 <td>{{ carrera.nombre }}</td>
                 <td>{{ carrera.facultad.nombre }}</td>
                 <td>
-                    <a href="{% url 'carrera_editar' carrera.pk %}">Editar</a>
-                    <a href="{% url 'carrera_eliminar' carrera.pk %}" onclick="return confirm('¿Eliminar carrera?')">Eliminar</a>
+                    <a href="{% url 'carrera_editar' carrera.pk %}" class="btn small secondary">Editar</a>
+                    <a href="{% url 'carrera_eliminar' carrera.pk %}" class="btn small danger" onclick="return confirm('¿Eliminar carrera?')">Eliminar</a>
                 </td>
             </tr>
             {% empty %}

@@ -3,26 +3,12 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/academico.css' %}">
 <div class="page">
-    <h1>Gestión de grupos</h1>
-    <form method="post" class="inline-form">
-        {% csrf_token %}
-        <select name="materia" required>
-            <option value="">Seleccione materia</option>
-            {% for materia in materias %}
-            <option value="{{ materia.pk }}">{{ materia.codigo }} - {{ materia.nombre }}</option>
-            {% endfor %}
-        </select>
-        <select name="docente">
-            <option value="">Sin docente</option>
-            {% for docente in docentes %}
-            <option value="{{ docente.pk }}">{{ docente.nombre }} {{ docente.apellido }}</option>
-            {% endfor %}
-        </select>
-        <input type="text" name="horario" placeholder="Horario">
-        <input type="number" name="numero" placeholder="Número de grupo" required>
-        <input type="number" name="cupo" value="30" min="1" required>
-        <button type="submit">Agregar</button>
-    </form>
+    <div class="page-header">
+        <h1>Gestión de grupos</h1>
+        <div>
+            <a href="{% url 'grupo_nuevo' %}" class="btn">Nuevo grupo</a>
+        </div>
+    </div>
     <table>
         <thead>
             <tr><th>Materia</th><th>Grupo</th><th>Docente</th><th>Horario</th><th>Cupo</th><th>Acciones</th></tr>
@@ -36,8 +22,8 @@
                 <td>{{ grupo.horario }}</td>
                 <td>{{ grupo.cupo }}</td>
                 <td>
-                    <a href="{% url 'grupo_editar' grupo.pk %}">Editar</a>
-                    <a href="{% url 'grupo_eliminar' grupo.pk %}" onclick="return confirm('¿Eliminar grupo?')">Eliminar</a>
+                    <a href="{% url 'grupo_editar' grupo.pk %}" class="btn small secondary">Editar</a>
+                    <a href="{% url 'grupo_eliminar' grupo.pk %}" class="btn small danger" onclick="return confirm('¿Eliminar grupo?')">Eliminar</a>
                 </td>
             </tr>
             {% empty %}

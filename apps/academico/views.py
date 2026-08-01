@@ -5,14 +5,22 @@ from .models import Facultad, Carrera, Materia, Grupo
 
 def facultades(request):
     facultades = Facultad.objects.all()
+    return render(request, 'academico/facultades.html', {'facultades': facultades})
+
+
+def facultad_nuevo(request):
     if request.method == 'POST':
         Facultad.objects.create(nombre=request.POST.get('nombre'))
         return redirect('facultades')
-    return render(request, 'academico/facultades.html', {'facultades': facultades})
+    return render(request, 'academico/facultad_form.html', {'facultad': None})
 
 
 def carreras(request):
     carreras = Carrera.objects.select_related('facultad').all()
+    return render(request, 'academico/carreras.html', {'carreras': carreras})
+
+
+def carrera_nueva(request):
     facultades = Facultad.objects.all()
     if request.method == 'POST':
         Carrera.objects.create(
@@ -20,7 +28,7 @@ def carreras(request):
             facultad=Facultad.objects.get(pk=request.POST.get('facultad')),
         )
         return redirect('carreras')
-    return render(request, 'academico/carreras.html', {'carreras': carreras, 'facultades': facultades})
+    return render(request, 'academico/carrera_form.html', {'carrera': None, 'facultades': facultades})
 
 
 def carrera_editar(request, pk):
@@ -56,7 +64,11 @@ def facultad_eliminar(request, pk):
 
 
 def materias(request):
-    materias = Materia.objects.select_related('carrera').all()
+    materias = Materia.objects.select_related('carrera__facultad').all()
+    return render(request, 'academico/materias.html', {'materias': materias})
+
+
+def materia_nueva(request):
     carreras = Carrera.objects.select_related('facultad').all()
     if request.method == 'POST':
         Materia.objects.create(
@@ -67,7 +79,7 @@ def materias(request):
             carrera=Carrera.objects.get(pk=request.POST.get('carrera')),
         )
         return redirect('materias')
-    return render(request, 'academico/materias.html', {'materias': materias, 'carreras': carreras})
+    return render(request, 'academico/materia_form.html', {'materia': None, 'carreras': carreras})
 
 
 def materia_editar(request, pk):
@@ -92,6 +104,10 @@ def materia_eliminar(request, pk):
 
 def grupos(request):
     grupos = Grupo.objects.select_related('materia', 'docente').all()
+    return render(request, 'academico/grupos.html', {'grupos': grupos})
+
+
+def grupo_nuevo(request):
     materias = Materia.objects.select_related('carrera').all()
     docentes = Docente.objects.select_related('facultad', 'carrera').all()
     if request.method == 'POST':
@@ -103,7 +119,7 @@ def grupos(request):
             cupo=request.POST.get('cupo', 30),
         )
         return redirect('grupos')
-    return render(request, 'academico/grupos.html', {'grupos': grupos, 'materias': materias, 'docentes': docentes})
+    return render(request, 'academico/grupo_form.html', {'grupo': None, 'materias': materias, 'docentes': docentes})
 
 
 def grupo_editar(request, pk):
