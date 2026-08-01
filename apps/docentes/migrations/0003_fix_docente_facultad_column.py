@@ -1,6 +1,28 @@
 from django.db import migrations
 
 
+def fix_docente_columns(apps, schema_editor):
+    if schema_editor.connection.vendor != 'postgresql':
+        return
+
+    schema_editor.execute(
+        """
+        ALTER TABLE docentes_docente
+        ADD COLUMN IF NOT EXISTS facultad_id bigint NULL REFERENCES academico_facultad(id) DEFERRABLE INITIALLY DEFERRED;
+        """
+    )
+    schema_editor.execute(
+        """
+        ALTER TABLE docentes_docente
+        ADD COLUMN IF NOT EXISTS carrera_id bigint NULL REFERENCES academico_carrera(id) DEFERRABLE INITIALLY DEFERRED;
+        """
+    )
+
+
+def reverse_func(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -8,11 +30,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL(
-            """
-            ALTER TABLE docentes_docente ADD COLUMN facultad_id bigint NULL REFERENCES academico_facultad(id) DEFERRABLE INITIALLY DEFERRED;
-            ALTER TABLE docentes_docente ADD COLUMN carrera_id bigint NULL REFERENCES academico_carrera(id) DEFERRABLE INITIALLY DEFERRED;
-            """,
-            reverse_sql="SELECT 1;",
-        ),
+        migrations.RunPython(fix_docente_columns, reverse_func),
     ]
