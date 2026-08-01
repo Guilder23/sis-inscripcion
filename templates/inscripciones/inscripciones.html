@@ -3,31 +3,85 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/inscripciones.css' %}">
 <div class="page">
-    <h1>Inscripciones</h1>
-    {% if user.is_staff %}
-        <a class="btn" href="{% url 'nueva_inscripcion' %}">Nueva inscripción</a>
-    {% else %}
-        <a class="btn" href="{% url 'nueva_inscripcion' %}">Inscribirme</a>
+    <div class="page-header">
+        <div>
+            <h1>Oferta académica</h1>
+            <p>Consulta todas las materias disponibles con su código, semestre, docentes y grupos.</p>
+        </div>
+        {% if user.is_staff %}
+            <a class="btn" href="{% url 'nueva_inscripcion' %}">Nueva inscripción</a>
+        {% else %}
+            <a class="btn" href="{% url 'nueva_inscripcion' %}">Inscribirme</a>
+        {% endif %}
+    </div>
+
+    {% if not user.is_staff %}
+    <div class="section-card">
+        <h2>Mis inscripciones actuales</h2>
+        <table>
+            <thead>
+                <tr><th>Materia</th><th>Grupo</th><th>Docente</th><th>Horario</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+                {% for inscripcion in inscripciones %}
+                <tr>
+                    <td>{{ inscripcion.grupo.materia.codigo }} - {{ inscripcion.grupo.materia.nombre }}</td>
+                    <td>Grupo {{ inscripcion.grupo.numero }}</td>
+                    <td>{{ inscripcion.grupo.docente }}</td>
+                    <td>{{ inscripcion.grupo.horario }}</td>
+                    <td>{{ inscripcion.estado }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5">Aún no tienes materias inscritas.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endif %}
-    <table>
-        <thead>
-            <tr><th>Estudiante</th><th>Materia</th><th>Grupo</th><th>Docente</th><th>Horario</th><th>Fecha</th><th>Estado</th></tr>
-        </thead>
-        <tbody>
-            {% for inscripcion in inscripciones %}
-            <tr>
-                <td>{{ inscripcion.estudiante.nombre }} {{ inscripcion.estudiante.apellido }}</td>
-                <td>{{ inscripcion.grupo.materia.nombre }}</td>
-                <td>{{ inscripcion.grupo.numero }}</td>
-                <td>{{ inscripcion.grupo.docente }}</td>
-                <td>{{ inscripcion.grupo.horario }}</td>
-                <td>{{ inscripcion.fecha }}</td>
-                <td>{{ inscripcion.estado }}</td>
-            </tr>
+
+    <div class="section-card">
+        <h2>Materias disponibles</h2>
+        <div class="materias-grid">
+            {% for materia in materias %}
+            <article class="materia-card">
+                <div class="materia-top">
+                    <div>
+                        <h3>{{ materia.codigo }}</h3>
+                        <p>{{ materia.nombre }}</p>
+                    </div>
+                    <span class="badge">Semestre {{ materia.semestre }}</span>
+                </div>
+                <div class="materia-meta">
+                    <span><i class="fa-solid fa-building-columns"></i> {{ materia.facultad.nombre }}</span>
+                    <span><i class="fa-solid fa-book-open"></i> {{ materia.creditos }} cr.</span>
+                </div>
+                <div class="grupos-list">
+                    {% for grupo in materia.grupos.all %}
+                        {% if grupo.activo %}
+                        <div class="grupo-item">
+                            <div>
+                                <strong>Grupo {{ grupo.numero }}</strong>
+                                <p>{{ grupo.docente|default:"Sin docente asignado" }}</p>
+                                <small>{{ grupo.horario }}</small>
+                            </div>
+                            {% if not user.is_staff %}
+                            <form method="post" action="{% url 'nueva_inscripcion' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="grupo" value="{{ grupo.pk }}">
+                                <button type="submit" class="btn small">Inscribir</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% empty %}
+                        <p class="empty">No hay grupos disponibles en este momento.</p>
+                    {% endfor %}
+                </div>
+            </article>
             {% empty %}
-            <tr><td colspan="7">No hay inscripciones registradas.</td></tr>
+            <p>No hay materias registradas.</p>
             {% endfor %}
-        </tbody>
-    </table>
+        </div>
+    </div>
 </div>
 {% endblock %}

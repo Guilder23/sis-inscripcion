@@ -1,2 +1,42 @@
-.login-box { max-width: 360px; margin: 60px auto; }
-.login-box h2 { text-align: center; }
+.login-box {
+  width: min(100%, 420px);
+  padding: 36px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(10px);
+}
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+.login-box .hint {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+}
+.login-box form {
+  display: grid;
+  gap: 12px;
+}
+.login-box input {
+  padding: 12px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+.login-box button {
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.login-box .error {
+  margin-bottom: 12px;
+  border-radius: 10px;
+}

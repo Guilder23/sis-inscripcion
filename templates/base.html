@@ -6,17 +6,26 @@
     <title>Sistema de Inscripción UMSS</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
-    <div class="app-shell">
-        {% include 'componentes/sidebar.html' %}
-        <div class="main-panel">
-            {% include 'componentes/navbar.html' %}
-            <main class="content">
-                {% block content %}{% endblock %}
-            </main>
-            {% include 'componentes/footer.html' %}
+    {% if user.is_authenticated %}
+        <div class="app-shell">
+            {% include 'componentes/sidebar.html' %}
+            <div class="main-panel">
+                {% include 'componentes/navbar.html' %}
+                <main class="content">
+                    {% block content %}{% endblock %}
+                </main>
+                {% include 'componentes/footer.html' %}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="app-shell auth-page">
+            <main class="content auth-content">
+                {% block auth_content %}{% endblock %}
+            </main>
+        </div>
+    {% endif %}
 </body>
 </html>

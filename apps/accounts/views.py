@@ -6,6 +6,11 @@ from inscripciones.models import Inscripcion
 
 
 def login_view(request):
+    if request.user.is_authenticated:
+        if getattr(request.user, 'is_staff', False):
+            return redirect('dashboard')
+        return redirect('student_dashboard')
+
     if request.method == 'POST':
         username = request.POST.get('usuario')
         password = request.POST.get('password')
