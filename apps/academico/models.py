@@ -1,4 +1,5 @@
 from django.db import models
+from docentes.models import Docente
 
 
 class Facultad(models.Model):
@@ -20,6 +21,8 @@ class Materia(models.Model):
 
 class Grupo(models.Model):
     materia = models.ForeignKey(Materia, on_delete=models.CASCADE, related_name='grupos')
+    docente = models.ForeignKey(Docente, on_delete=models.SET_NULL, null=True, blank=True, related_name='grupos')
+    horario = models.CharField(max_length=100, blank=True)
     numero = models.PositiveIntegerField()
     cupo = models.PositiveIntegerField(default=30)
 

@@ -7,6 +7,8 @@
     <form method="post">
         {% csrf_token %}
         <input type="text" name="codigo" value="{{ estudiante.codigo|default_if_none:'' }}" placeholder="Código SIS" required>
+        <input type="text" name="usuario" value="{{ estudiante.user.username|default_if_none:'' }}" placeholder="Usuario para acceso" required>
+        <input type="password" name="password" placeholder="Contraseña" {% if not estudiante %}required{% endif %}>
         <input type="text" name="nombre" value="{{ estudiante.nombre|default_if_none:'' }}" placeholder="Nombre" required>
         <input type="text" name="apellido" value="{{ estudiante.apellido|default_if_none:'' }}" placeholder="Apellido" required>
         <input type="email" name="email" value="{{ estudiante.email|default_if_none:'' }}" placeholder="Correo" required>

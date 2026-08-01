@@ -4,12 +4,19 @@
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 <div class="dashboard">
     <h1>Panel de control</h1>
-    <p>Sistema de inscripción estudiantil</p>
+    <p>Sistema de inscripción estudiantil UMSS</p>
     <div class="cards">
         <a class="card" href="{% url 'estudiantes' %}">Gestionar estudiantes</a>
         <a class="card" href="{% url 'docentes' %}">Gestionar docentes</a>
+        <a class="card" href="{% url 'facultades' %}">Gestionar facultades</a>
         <a class="card" href="{% url 'materias' %}">Gestionar materias</a>
+        <a class="card" href="{% url 'grupos' %}">Gestionar grupos</a>
         <a class="card" href="{% url 'inscripciones' %}">Inscribir materias</a>
+        <a class="card" href="{% url 'historial' %}">Historial</a>
+    </div>
+    <div class="stats">
+        <p>Estudiantes registrados: {{ stats.estudiantes }}</p>
+        <p>Inscripciones activas: {{ stats.inscripciones }}</p>
     </div>
 </div>
 {% endblock %}

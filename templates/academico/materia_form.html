@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/academico.css' %}">
+<div class="page">
+    <h1>Editar materia</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="codigo" value="{{ materia.codigo }}" required>
+        <input type="text" name="nombre" value="{{ materia.nombre }}" required>
+        <input type="number" name="creditos" value="{{ materia.creditos }}" min="1" required>
+        <select name="facultad" required>
+            {% for facultad in facultades %}
+            <option value="{{ facultad.pk }}" {% if materia.facultad_id == facultad.pk %}selected{% endif %}>{{ facultad.nombre }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endblock %}

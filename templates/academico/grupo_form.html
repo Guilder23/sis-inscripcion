@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/academico.css' %}">
+<div class="page">
+    <h1>Editar grupo</h1>
+    <form method="post">
+        {% csrf_token %}
+        <select name="materia" required>
+            {% for materia in materias %}
+            <option value="{{ materia.pk }}" {% if grupo.materia_id == materia.pk %}selected{% endif %}>{{ materia.codigo }} - {{ materia.nombre }}</option>
+            {% endfor %}
+        </select>
+        <select name="docente">
+            <option value="">Sin docente</option>
+            {% for docente in docentes %}
+            <option value="{{ docente.pk }}" {% if grupo.docente_id == docente.pk %}selected{% endif %}>{{ docente.nombre }} {{ docente.apellido }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="horario" value="{{ grupo.horario }}">
+        <input type="number" name="numero" value="{{ grupo.numero }}" required>
+        <input type="number" name="cupo" value="{{ grupo.cupo }}" min="1" required>
+        <button type="submit">Guardar</button>
+    </form>
+</div>
+{% endblock %}

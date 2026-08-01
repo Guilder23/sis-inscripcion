@@ -8,19 +8,15 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>UMSS</h2>
-        <a href="{% url 'dashboard' %}">Inicio</a>
-        <a href="{% url 'estudiantes' %}">Estudiantes</a>
-        <a href="{% url 'docentes' %}">Docentes</a>
-        <a href="{% url 'facultades' %}">Facultades</a>
-        <a href="{% url 'materias' %}">Materias</a>
-        <a href="{% url 'grupos' %}">Grupos</a>
-        <a href="{% url 'inscripciones' %}">Inscripciones</a>
-        <a href="{% url 'historial' %}">Historial</a>
-    </div>
-    <div class="content">
-        {% block content %}{% endblock %}
+    <div class="app-shell">
+        {% include 'componentes/sidebar.html' %}
+        <div class="main-panel">
+            {% include 'componentes/navbar.html' %}
+            <main class="content">
+                {% block content %}{% endblock %}
+            </main>
+            {% include 'componentes/footer.html' %}
+        </div>
     </div>
 </body>
 </html>

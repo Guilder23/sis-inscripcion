@@ -4,11 +4,14 @@
 <link rel="stylesheet" href="{% static 'css/inscripciones.css' %}">
 <div class="page">
     <h1>Inscripciones</h1>
-    <a class="btn" href="{% url 'nueva_inscripcion' %}">Nueva inscripción</a>
-    <a class="btn secondary" href="{% url 'dashboard' %}">Volver</a>
+    {% if user.is_staff %}
+        <a class="btn" href="{% url 'nueva_inscripcion' %}">Nueva inscripción</a>
+    {% else %}
+        <a class="btn" href="{% url 'nueva_inscripcion' %}">Inscribirme</a>
+    {% endif %}
     <table>
         <thead>
-            <tr><th>Estudiante</th><th>Materia</th><th>Grupo</th><th>Fecha</th><th>Estado</th></tr>
+            <tr><th>Estudiante</th><th>Materia</th><th>Grupo</th><th>Docente</th><th>Horario</th><th>Fecha</th><th>Estado</th></tr>
         </thead>
         <tbody>
             {% for inscripcion in inscripciones %}
@@ -16,11 +19,13 @@
                 <td>{{ inscripcion.estudiante.nombre }} {{ inscripcion.estudiante.apellido }}</td>
                 <td>{{ inscripcion.grupo.materia.nombre }}</td>
                 <td>{{ inscripcion.grupo.numero }}</td>
+                <td>{{ inscripcion.grupo.docente }}</td>
+                <td>{{ inscripcion.grupo.horario }}</td>
                 <td>{{ inscripcion.fecha }}</td>
                 <td>{{ inscripcion.estado }}</td>
             </tr>
             {% empty %}
-            <tr><td colspan="5">No hay inscripciones registradas.</td></tr>
+            <tr><td colspan="7">No hay inscripciones registradas.</td></tr>
             {% endfor %}
         </tbody>
     </table>

@@ -1,0 +1,12 @@
+{% load static %}
+<header class="topbar">
+    <div class="topbar-title">
+        <h2>Sistema de Inscripción UMSS</h2>
+        <p>Gestión académica moderna</p>
+    </div>
+    <div class="topbar-actions">
+        {% if user.is_authenticated %}
+            <span class="user-pill">{{ user.username }}</span>
+        {% endif %}
+    </div>
+</header>

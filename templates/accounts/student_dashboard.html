@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<div class="dashboard">
+    <h1>Portal del estudiante</h1>
+    <p>Bienvenido, {{ estudiante.nombre }} {{ estudiante.apellido }}</p>
+    <div class="cards">
+        <a class="card" href="{% url 'inscripciones' %}">Inscribirme a materias</a>
+        <a class="card" href="{% url 'historial' %}">Ver mi historial</a>
+    </div>
+    <table>
+        <thead>
+            <tr><th>Materia</th><th>Grupo</th><th>Docente</th><th>Horario</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+            {% for inscripcion in inscripciones %}
+            <tr>
+                <td>{{ inscripcion.grupo.materia.nombre }}</td>
+                <td>{{ inscripcion.grupo.numero }}</td>
+                <td>{{ inscripcion.grupo.docente }}</td>
+                <td>{{ inscripcion.grupo.horario }}</td>
+                <td>{{ inscripcion.estado }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">Aún no tienes materias inscritas.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

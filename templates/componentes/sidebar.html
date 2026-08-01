@@ -1,0 +1,32 @@
+{% load static %}
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon">U</div>
+        <div>
+            <h3>UMSS</h3>
+            <p>Inscripción</p>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <a href="{% url 'dashboard' %}" class="nav-item"><span>🏠</span> Inicio</a>
+                <a href="{% url 'estudiantes' %}" class="nav-item"><span>🎓</span> Estudiantes</a>
+                <a href="{% url 'docentes' %}" class="nav-item"><span>👨‍🏫</span> Docentes</a>
+                <a href="{% url 'facultades' %}" class="nav-item"><span>🏛️</span> Facultades</a>
+                <a href="{% url 'materias' %}" class="nav-item"><span>📚</span> Materias</a>
+                <a href="{% url 'grupos' %}" class="nav-item"><span>🧩</span> Grupos</a>
+                <a href="{% url 'inscripciones' %}" class="nav-item"><span>📝</span> Inscripciones</a>
+                <a href="{% url 'historial' %}" class="nav-item"><span>📊</span> Historial</a>
+            {% else %}
+                <a href="{% url 'student_dashboard' %}" class="nav-item"><span>🏠</span> Mi portal</a>
+                <a href="{% url 'inscripciones' %}" class="nav-item"><span>📝</span> Inscribirme</a>
+                <a href="{% url 'historial' %}" class="nav-item"><span>📊</span> Mi historial</a>
+            {% endif %}
+            <a href="{% url 'logout' %}" class="nav-item logout"><span>↩️</span> Cerrar sesión</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="nav-item"><span>🔐</span> Iniciar sesión</a>
+        {% endif %}
+    </nav>
+</aside>

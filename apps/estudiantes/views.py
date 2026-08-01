@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Estudiante
 
@@ -9,7 +10,11 @@ def estudiantes(request):
 
 def estudiante_nuevo(request):
     if request.method == 'POST':
-        Estudiante.objects.create(
+        username = request.POST.get('usuario') or request.POST.get('codigo')
+        password = request.POST.get('password') or '12345678'
+        user = User.objects.create_user(username=username, password=password, email=request.POST.get('email'))
+        estudiante = Estudiante.objects.create(
+            user=user,
             codigo=request.POST.get('codigo'),
             nombre=request.POST.get('nombre'),
             apellido=request.POST.get('apellido'),
@@ -30,6 +35,15 @@ def estudiante_editar(request, pk):
         estudiante.email = request.POST.get('email')
         estudiante.carrera = request.POST.get('carrera')
         estudiante.activo = request.POST.get('activo') == 'on'
+        if estudiante.user is None:
+            username = request.POST.get('usuario') or request.POST.get('codigo')
+            password = request.POST.get('password') or '12345678'
+            user = User.objects.create_user(username=username, password=password, email=estudiante.email)
+            estudiante.user = user
+        else:
+            if request.POST.get('password'):
+                estudiante.user.set_password(request.POST.get('password'))
+                estudiante.user.save()
         estudiante.save()
         return redirect('estudiantes')
     return render(request, 'estudiantes/estudiante_form.html', {'estudiante': estudiante})
@@ -37,5 +51,7 @@ def estudiante_editar(request, pk):
 
 def estudiante_eliminar(request, pk):
     estudiante = get_object_or_404(Estudiante, pk=pk)
+    if estudiante.user:
+        estudiante.user.delete()
     estudiante.delete()
     return redirect('estudiantes')
