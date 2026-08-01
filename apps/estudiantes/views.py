@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from academico.models import Facultad
 from .models import Estudiante
 
 
@@ -9,6 +10,7 @@ def estudiantes(request):
 
 
 def estudiante_nuevo(request):
+    facultades = Facultad.objects.all()
     if request.method == 'POST':
         username = request.POST.get('usuario') or request.POST.get('codigo')
         password = request.POST.get('password') or '12345678'
@@ -23,11 +25,12 @@ def estudiante_nuevo(request):
             activo=request.POST.get('activo') == 'on',
         )
         return redirect('estudiantes')
-    return render(request, 'estudiantes/estudiante_form.html')
+    return render(request, 'estudiantes/estudiante_form.html', {'facultades': facultades})
 
 
 def estudiante_editar(request, pk):
     estudiante = get_object_or_404(Estudiante, pk=pk)
+    facultades = Facultad.objects.all()
     if request.method == 'POST':
         estudiante.codigo = request.POST.get('codigo')
         estudiante.nombre = request.POST.get('nombre')
@@ -46,7 +49,7 @@ def estudiante_editar(request, pk):
                 estudiante.user.save()
         estudiante.save()
         return redirect('estudiantes')
-    return render(request, 'estudiantes/estudiante_form.html', {'estudiante': estudiante})
+    return render(request, 'estudiantes/estudiante_form.html', {'estudiante': estudiante, 'facultades': facultades})
 
 
 def estudiante_eliminar(request, pk):

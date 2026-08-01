@@ -3,18 +3,62 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/estudiantes.css' %}">
 <div class="page">
-    <h1>{% if estudiante %}Editar estudiante{% else %}Nuevo estudiante{% endif %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="codigo" value="{{ estudiante.codigo|default_if_none:'' }}" placeholder="Código SIS" required>
-        <input type="text" name="usuario" value="{{ estudiante.user.username|default_if_none:'' }}" placeholder="Usuario para acceso" required>
-        <input type="password" name="password" placeholder="Contraseña" {% if not estudiante %}required{% endif %}>
-        <input type="text" name="nombre" value="{{ estudiante.nombre|default_if_none:'' }}" placeholder="Nombre" required>
-        <input type="text" name="apellido" value="{{ estudiante.apellido|default_if_none:'' }}" placeholder="Apellido" required>
-        <input type="email" name="email" value="{{ estudiante.email|default_if_none:'' }}" placeholder="Correo" required>
-        <input type="text" name="carrera" value="{{ estudiante.carrera|default_if_none:'' }}" placeholder="Carrera" required>
-        <label><input type="checkbox" name="activo" {% if estudiante and estudiante.activo %}checked{% endif %}> Activo</label>
-        <button type="submit">Guardar</button>
-    </form>
+    <div class="page-header">
+        <div>
+            <h1>{% if estudiante %}Editar estudiante{% else %}Nuevo estudiante{% endif %}</h1>
+            <p>Complete los datos del estudiante y seleccione su carrera para habilitar las materias disponibles.</p>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <form method="post" class="stacked-form">
+            {% csrf_token %}
+            <div class="form-grid">
+                <label class="field">
+                    <span>Código SIS</span>
+                    <input type="text" name="codigo" value="{{ estudiante.codigo|default_if_none:'' }}" placeholder="Código SIS" required>
+                </label>
+                <label class="field">
+                    <span>Usuario para acceso</span>
+                    <input type="text" name="usuario" value="{{ estudiante.user.username|default_if_none:'' }}" placeholder="Usuario para acceso" required>
+                </label>
+                <label class="field">
+                    <span>Contraseña</span>
+                    <input type="password" name="password" placeholder="{% if estudiante %}Nueva contraseña (opcional){% else %}Contraseña{% endif %}" {% if not estudiante %}required{% endif %}>
+                </label>
+                <label class="field">
+                    <span>Nombre</span>
+                    <input type="text" name="nombre" value="{{ estudiante.nombre|default_if_none:'' }}" placeholder="Nombre" required>
+                </label>
+                <label class="field">
+                    <span>Apellido</span>
+                    <input type="text" name="apellido" value="{{ estudiante.apellido|default_if_none:'' }}" placeholder="Apellido" required>
+                </label>
+                <label class="field">
+                    <span>Correo electrónico</span>
+                    <input type="email" name="email" value="{{ estudiante.email|default_if_none:'' }}" placeholder="Correo" required>
+                </label>
+            </div>
+
+            <label class="field">
+                <span>Carrera</span>
+                <select name="carrera" required>
+                    <option value="">Seleccione una carrera</option>
+                    {% for facultad in facultades %}
+                    <option value="{{ facultad.nombre }}" {% if estudiante and estudiante.carrera == facultad.nombre %}selected{% endif %}>{{ facultad.nombre }}</option>
+                    {% empty %}
+                    <option value="" disabled>No hay carreras registradas</option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label class="checkbox-field">
+                <input type="checkbox" name="activo" {% if estudiante and estudiante.activo %}checked{% endif %}>
+                <span>Estudiante activo</span>
+            </label>
+
+            <button type="submit" class="btn">Guardar estudiante</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

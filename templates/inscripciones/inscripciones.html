@@ -52,7 +52,9 @@
                     <span class="badge">Semestre {{ materia.semestre }}</span>
                 </div>
                 <div class="materia-meta">
+                    {% if user.is_staff %}
                     <span><i class="fa-solid fa-building-columns"></i> {{ materia.facultad.nombre }}</span>
+                    {% endif %}
                     <span><i class="fa-solid fa-book-open"></i> {{ materia.creditos }} cr.</span>
                 </div>
                 <div class="grupos-list">
@@ -79,7 +81,7 @@
                 </div>
             </article>
             {% empty %}
-            <p>No hay materias registradas.</p>
+            <p>No hay materias disponibles para tu carrera en este momento.</p>
             {% endfor %}
         </div>
     </div>

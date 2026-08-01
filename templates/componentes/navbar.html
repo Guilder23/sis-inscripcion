@@ -7,6 +7,7 @@
     <div class="topbar-actions">
         {% if user.is_authenticated %}
             <span class="user-pill">{{ user.username }}</span>
+            <a class="topbar-link" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
         {% endif %}
     </div>
 </header>
