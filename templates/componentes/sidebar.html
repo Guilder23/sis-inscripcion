@@ -20,10 +20,12 @@
                 <a href="{% url 'grupos' %}" class="nav-item"><i class="fa-solid fa-layer-group"></i> Grupos</a>
                 <a href="{% url 'inscripciones' %}" class="nav-item"><i class="fa-solid fa-file-signature"></i> Inscripciones</a>
                 <a href="{% url 'historial' %}" class="nav-item"><i class="fa-solid fa-chart-line"></i> Historial</a>
+                <a href="{% url 'cardex' %}" class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Cardex</a>
             {% else %}
                 <a href="{% url 'student_dashboard' %}" class="nav-item"><i class="fa-solid fa-house"></i> Mi portal</a>
                 <a href="{% url 'inscripciones' %}" class="nav-item"><i class="fa-solid fa-file-signature"></i> Inscribirme</a>
                 <a href="{% url 'historial' %}" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> Mi historial</a>
+                <a href="{% url 'cardex' %}" class="nav-item"><i class="fa-solid fa-graduation-cap"></i> Cardex</a>
             {% endif %}
             <a href="{% url 'logout' %}" class="nav-item logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a>
         {% else %}

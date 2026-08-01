@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/reportes.css' %}">
+<div class="page">
+    <div class="page-header">
+        <div>
+            <h1>Cardex académico</h1>
+            <p>Consulta tus calificaciones por materia, promedio por asignatura y resumen general.</p>
+        </div>
+        <button class="btn" onclick="window.print()">Generar PDF</button>
+    </div>
+
+    <div class="section-card cardex-overview">
+        <div class="cardex-summary">
+            <div>
+                <p class="muted-text">Estudiante</p>
+                <h2>{{ estudiante.nombre }} {{ estudiante.apellido }}</h2>
+                <p class="muted-text">Código: {{ estudiante.codigo }}</p>
+                <p class="muted-text">Carrera: {% if estudiante.carrera %}{{ estudiante.carrera.nombre }}{% else %}No asignada{% endif %}</p>
+            </div>
+            <div class="cardex-actions">
+                <button class="btn secondary" onclick="window.print()">Descargar PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card cardex-overview">
+        <div class="cardex-cards">
+            <article class="metric-card">
+                <span class="label">Materias inscritas</span>
+                <strong>{{ summary.total_materias }}</strong>
+            </article>
+            <article class="metric-card">
+                <span class="label">Aprobadas</span>
+                <strong>{{ summary.aprobadas }}</strong>
+            </article>
+            <article class="metric-card">
+                <span class="label">Reprobadas</span>
+                <strong>{{ summary.reprobadas }}</strong>
+            </article>
+            <article class="metric-card">
+                <span class="label">Promedio general</span>
+                <strong>{{ summary.promedio_general }}</strong>
+            </article>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="page-subheader">
+            <h2>Detalle de notas</h2>
+            <p class="muted-text">Revisa tus calificaciones por semestre y materia con la información de cada docente.</p>
+        </div>
+
+        <div class="table-responsive">
+            <table class="cardex-table">
+                <thead>
+                    <tr>
+                        <th>Semestre</th>
+                        <th>Código</th>
+                        <th>Materia</th>
+                        <th>Docente</th>
+                        <th>1er parcial</th>
+                        <th>2do parcial</th>
+                        <th>Final</th>
+                        <th>Instancia</th>
+                        <th>Promedio</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{ row.semestre }}</td>
+                        <td>{{ row.codigo }}</td>
+                        <td>{{ row.materia }}</td>
+                        <td>{{ row.docente }}</td>
+                        <td>{{ row.primer_parcial }}</td>
+                        <td>{{ row.segundo_parcial }}</td>
+                        <td>{{ row.final }}</td>
+                        <td>{{ row.instancia }}</td>
+                        <td>{{ row.promedio }}</td>
+                        <td><span class="status-pill {{ row.estado|lower }}">{{ row.estado }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center">No hay calificaciones registradas aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

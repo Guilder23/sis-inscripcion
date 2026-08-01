@@ -1,1 +1,94 @@
 .page h1 { margin-bottom: 16px; }
+
+.cardex-overview {
+  display: grid;
+  gap: 22px;
+}
+.cardex-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.cardex-actions {
+  display: flex;
+  gap: 12px;
+}
+.cardex-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 16px;
+}
+.metric-card {
+  padding: 22px;
+  background: #f8fbff;
+  border-radius: 18px;
+  border: 1px solid #dbeafe;
+}
+.metric-card .label {
+  color: #64748b;
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+.metric-card strong {
+  font-size: 1.8rem;
+  display: block;
+  color: #0f172a;
+}
+.page-subheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.table-responsive {
+  overflow-x: auto;
+}
+.cardex-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.cardex-table th,
+.cardex-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+  vertical-align: middle;
+}
+.cardex-table th {
+  background: #eff6ff;
+  color: #0f172a;
+  font-weight: 700;
+}
+.status-pill {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.status-pill.aprobada {
+  background: #dcfce7;
+  color: #166534;
+}
+.status-pill.reprobada {
+  background: #fef3c7;
+  color: #92400e;
+}
+.status-pill.activa {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.status-pill.n_a {
+  background: #f3f4f6;
+  color: #475569;
+}
+.text-center {
+  text-align: center;
+  padding: 30px 0;
+  color: #475569;
+}
