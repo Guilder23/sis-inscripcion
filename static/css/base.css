@@ -63,6 +63,27 @@ body {
 }
 .topbar-title h2 { margin: 0; font-size: 1.1rem; }
 .topbar-title p { margin: 2px 0 0; color: var(--muted); font-size: 0.9rem; }
+.topbar-title.with-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+.navbar-logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 8px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
 .topbar-actions { display: flex; align-items: center; gap: 10px; }
 .user-pill { background: var(--primary); color: white; padding: 8px 12px; border-radius: 999px; font-size: 0.9rem; }
 .topbar-link { color: var(--secondary); text-decoration: none; padding: 8px 12px; border-radius: 999px; background: #eff6ff; font-weight: 600; }

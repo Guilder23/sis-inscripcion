@@ -3,14 +3,25 @@
 {% block auth_content %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
 <div class="login-box">
-    <h2><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</h2>
-    <p class="hint">Sistema de inscripción estudiantil UMSS</p>
+    <div class="login-branding">
+        <img src="{% static 'img/image.png' %}" alt="UMSS logo" class="login-logo">
+        <div>
+            <h2>Sistema de Inscripción UMSS</h2>
+            <p class="hint">Accede con tu usuario o código SIS para continuar.</p>
+        </div>
+    </div>
     {% if error %}<p class="error">{{ error }}</p>{% endif %}
-    <form method="post">
+    <form method="post" class="login-form">
         {% csrf_token %}
-        <input type="text" name="usuario" placeholder="Código SIS o usuario" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <button type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Entrar</button>
+        <label>
+            <span>Usuario</span>
+            <input type="text" name="usuario" placeholder="Código SIS o usuario" required>
+        </label>
+        <label>
+            <span>Contraseña</span>
+            <input type="password" name="password" placeholder="Contraseña" required>
+        </label>
+        <button type="submit" class="btn"><i class="fa-solid fa-arrow-right-to-bracket"></i> Entrar</button>
     </form>
     <p class="hint">Usuario administrador: admin / admin1234</p>
 </div>

@@ -36,6 +36,43 @@
   font-weight: 600;
   cursor: pointer;
 }
+.login-box .login-branding {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+  text-align: left;
+}
+.login-box .login-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  object-fit: contain;
+  background: #ffffff;
+  padding: 10px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+.login-box .login-branding h2 {
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+}
+.login-box .login-branding .hint {
+  margin: 0;
+}
+.login-box .login-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.login-box .login-form input {
+  padding: 14px 16px;
+}
+.login-box .btn {
+  width: 100%;
+}
 .login-box .error {
   margin-bottom: 12px;
   border-radius: 10px;

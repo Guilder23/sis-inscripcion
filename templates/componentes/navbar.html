@@ -1,8 +1,13 @@
 {% load static %}
 <header class="topbar">
-    <div class="topbar-title">
-        <h2>Sistema de Inscripción UMSS</h2>
-        <p>Gestión académica moderna</p>
+    <div class="topbar-title with-logo">
+        <a class="navbar-brand" href="{% url 'dashboard' %}">
+            <img src="{% static 'img/image.png' %}" alt="UMSS logo" class="navbar-logo">
+            <div>
+                <h2>Sistema de Inscripción UMSS</h2>
+                <p>Gestión académica moderna</p>
+            </div>
+        </a>
     </div>
     <div class="topbar-actions">
         {% if user.is_authenticated %}
